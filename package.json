@@ -12,7 +12,8 @@
   "scripts": {
     "heroku-prebuild": "echo Start build -----------",
     "heroku-postbuild": "echo Build done -----",
-    "start": "nodemon index.js"
+    "start": "nodemon index.js",
+    "restart": "heroku restart -a sleepy-anchorage-85632"
   },
   "engines": {
     "node": "7.x"
