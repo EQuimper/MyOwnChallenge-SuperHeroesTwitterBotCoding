@@ -42,5 +42,17 @@ export const quotes = [
   {
     text: 'If you cage the best, the beast will get angry.',
     author: 'The Wolverine'
+  },
+  {
+    text: 'Intelligence is a privilege, and it needs to be used for the greater good of people.',
+    author: 'Dr. Octopus'
+  },
+  {
+    text: 'It doesn\'t matter who we are, what matters is our plan.',
+    author: 'Bane'
+  },
+  {
+    text: 'If you become more than a man, devote yourself to an ideal, then you become something else entirely.',
+    author: 'Ra\'s Al Ghul'
   }
 ]
