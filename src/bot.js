@@ -1,5 +1,4 @@
 import Twit from 'twit';
-import jsonfile from 'jsonfile';
 import config from './config';
 import { quotes } from './quotes';
 import { getRandomQuotes } from './helpers';
