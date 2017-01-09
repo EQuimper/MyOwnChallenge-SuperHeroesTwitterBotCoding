@@ -87,12 +87,13 @@ streamFilter.on('tweet', t => {
   console.log({ t });
   console.log('NEW TWEET');
   // Be sure we don't retweet a bot
-  if (blackListUsers.includes(t.user.screen_name)) {
-    console.log('USER BLOCK', t.user.screen_name);
+  const name = t.user.screen_name;
+  if (blackListUsers.includes(name) || new RegExp('bot', 'ig').test(name)) {
+    console.log('USER BLOCK', name);
     return;
   }
   // Tweet the user with a motivation message
-  tweetIt(getMotivationMessage(t.user.screen_name));
+  tweetIt(getMotivationMessage(name));
 });
 
 /*
