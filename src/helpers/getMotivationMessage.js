@@ -1,4 +1,5 @@
 import { getRandom } from './getRandom';
+import { quotes } from '../quotes';
 
 export const getMotivationMessage = name => {
   let mess;
@@ -10,4 +11,4 @@ export const getMotivationMessage = name => {
   } else {
     return mess;
   }
-}
+};

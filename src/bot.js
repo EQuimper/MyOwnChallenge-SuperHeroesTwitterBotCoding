@@ -1,12 +1,14 @@
 import Twit from 'twit';
 import config from './config';
-import { quotes } from './quotes';
-import { getRandom, getFollowedMessage, getMotivationMessage } from './helpers';
+import {
+  getFollowedMessage,
+  getMotivationMessage,
+  blackListUsers
+} from './helpers';
 import { hashtagsToReply } from './hashtagsToReply';
 import { hashtagsToTweets } from './hashtagsToTweets';
 
 const phraseToLook = ['#100DaysOfCode'];
-const blackListUser = ['_100DaysOfCode', 'heroes_bot'];
 const { consumer_key, consumer_secret, access_token, access_token_secret } = config;
 
 /*
@@ -17,7 +19,7 @@ const T = new Twit({
   consumer_secret,
   access_token,
   access_token_secret,
-  timeout_ms: 60*1000
+  timeout_ms: 60 * 1000
 });
 
 console.log('Bot is running...');
@@ -32,7 +34,7 @@ const tweetIt = txt => {
 
   console.log({ tweet });
 
-  T.post('statuses/update', tweet, (err, data, res) => {
+  T.post('statuses/update', tweet, err => {
     if (err) {
       console.log('SOMETHING WRONG HAPPEN');
     } else {
@@ -48,12 +50,12 @@ const tweetIt = txt => {
 /*
 * GET LIVE UPDATE WITH THE HASHTAG WE SEARCH
 */
-const streamFilter = T.stream('statuses/filter', { track: phraseToLook })
+const streamFilter = T.stream('statuses/filter', { track: phraseToLook });
 
 streamFilter.on('tweet', t => {
   console.log('NEW TWEET');
   // Be sure we don't retweet a bot
-  if (blackListUser.includes(t.user.screen_name)) {
+  if (blackListUsers.includes(t.user.screen_name)) {
     console.log('USER BLOCK', t.user.screen_name);
     return;
   }
@@ -65,6 +67,6 @@ const botStream = T.stream('user');
 const getFollowed = e => {
   console.log('GET A FOLLOWER');
   tweetIt(getFollowedMessage(e.source.screen_name));
-}
+};
 
-botStream.on('follow', getFollowed)
+botStream.on('follow', getFollowed);

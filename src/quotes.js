@@ -55,4 +55,4 @@ export const quotes = [
     text: 'If you become more than a man, devote yourself to an ideal, then you become something else entirely.',
     author: 'Ra\'s Al Ghul'
   }
-]
+];

@@ -26,5 +26,8 @@
     "babel-register": "^6.18.0",
     "nodemon": "^1.11.0",
     "twit": "^2.2.5"
+  },
+  "devDependencies": {
+    "eslint-config-rallycoding": "^3.1.0"
   }
 }
