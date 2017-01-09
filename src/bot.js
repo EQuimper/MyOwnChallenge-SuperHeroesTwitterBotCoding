@@ -34,7 +34,7 @@ if (process.env.NODE_ENV === 'production') {
 console.log('Bot is running...');
 
 
-setInterval(() => {
+const sendTweet = () => {
   console.log('WE RUN');
   const params = {
     q: phraseToLook,
@@ -59,10 +59,13 @@ setInterval(() => {
         name: getR.user.screen_name
       };
     }
-    return obj;
-  })
-    .then(obj => tweetIt(getMotivationMessage(obj.name)));
-}, 60000 * 5);
+    return tweetIt(getMotivationMessage(obj.name));
+  });
+};
+
+sendTweet();
+
+setInterval(sendTweet, 60000 * 5);
 
 
 
