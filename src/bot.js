@@ -9,13 +9,26 @@ import {
 /*
 * INIT THE BOT
 */
-const T = new Twit({
-  consumer_key: process.env.consumer_key,
-  consumer_secret: process.env.consumer_secret,
-  access_token: process.env.access_token,
-  access_token_secret: process.env.access_token_secret,
-  timeout_ms: 60 * 1000
-});
+let T;
+if (process.env.NODE_ENV === 'production') {
+  T = new Twit({
+    consumer_key: process.env.consumer_key,
+    consumer_secret: process.env.consumer_secret,
+    access_token: process.env.access_token,
+    access_token_secret: process.env.access_token_secret,
+    timeout_ms: 60 * 1000
+  });
+} else {
+  require('dotenv').config();
+
+  T = new Twit({
+    consumer_key: process.env.consumer_key,
+    consumer_secret: process.env.consumer_secret,
+    access_token: process.env.access_token,
+    access_token_secret: process.env.access_token_secret,
+    timeout_ms: 60 * 1000
+  });
+}
 
 console.log('Bot is running...');
 
@@ -39,11 +52,16 @@ const tweetIt = txt => {
     .then(() => {
       console.log('STOP FOR 2 MINUTES');
       streamFilter.stop();
-      setInterval(() => {
-        console.log('RESTART');
-        streamFilter.start();
-      }, 60000 * 2);
+      const int = setInterval(() => callRestart(int), 60000 * 2);
     });
+};
+
+// Restart the stream and clear the interval
+const callRestart = interval => {
+  streamFilter.start();
+  console.info('STREAM RESTART');
+  clearInterval(interval);
+  console.info('Interval clear');
 };
 
 /*
