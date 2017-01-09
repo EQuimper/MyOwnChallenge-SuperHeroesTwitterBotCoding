@@ -64,6 +64,12 @@ const callRestart = interval => {
   console.info('Interval clear');
 };
 
+streamFilter.on('limit', limitMessage => {
+  console.log('LIMIT', limitMessage);
+  streamFilter.stop();
+  const int = setInterval(() => callRestart(int), 60000 * 4);
+});
+
 /*
 * GET LIVE UPDATE WITH THE HASHTAG WE SEARCH
 */
