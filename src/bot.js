@@ -42,7 +42,7 @@ const tweetIt = txt => {
       setInterval(() => {
         console.log('RESTART');
         streamFilter.start();
-      });
+    }, 60000 * 2);
     });
 };
 
