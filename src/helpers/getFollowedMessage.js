@@ -11,4 +11,4 @@ export const getFollowedMessage = (name, small) => {
     getFollowedMessage(name, true);
   }
   return mess;
-}
+};

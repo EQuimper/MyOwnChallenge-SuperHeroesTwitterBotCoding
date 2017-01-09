@@ -50,9 +50,9 @@ const tweetIt = txt => {
     }
   })
     .then(() => {
-      console.log('STOP FOR 2 MINUTES');
+      console.log('STOP FOR 4 MINUTES');
       streamFilter.stop();
-      const int = setInterval(() => callRestart(int), 60000 * 2);
+      const int = setInterval(() => callRestart(int), 60000 * 4);
     });
 };
 
