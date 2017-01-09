@@ -64,16 +64,19 @@ const callRestart = interval => {
   console.info('Interval clear');
 };
 
+/*
+* GET LIVE UPDATE WITH THE HASHTAG WE SEARCH
+*/
+const streamFilter = T.stream('statuses/filter', { track: phraseToLook });
+
+/*
+* CHECK LIMIT MESSAGE
+*/
 streamFilter.on('limit', limitMessage => {
   console.log('LIMIT', limitMessage);
   streamFilter.stop();
   const int = setInterval(() => callRestart(int), 60000 * 4);
 });
-
-/*
-* GET LIVE UPDATE WITH THE HASHTAG WE SEARCH
-*/
-const streamFilter = T.stream('statuses/filter', { track: phraseToLook });
 
 streamFilter.on('tweet', t => {
   console.log({ t });
