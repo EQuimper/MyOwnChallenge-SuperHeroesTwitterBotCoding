@@ -4,7 +4,6 @@ import {
   getFollowedMessage,
   getMotivationMessage,
   blackListUsers,
-  hashtagsToReply,
   phraseToLook
 } from './helpers';
 
