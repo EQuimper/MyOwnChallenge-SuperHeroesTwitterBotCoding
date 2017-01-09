@@ -80,3 +80,37 @@ const getQuoted = e => {
 };
 
 quotedStream.on('quoted_tweet', getQuoted);
+
+/*
+* RETWEET THE MOST RECENT USER EACH 10 MINUTE WITH A MOTIVATION
+*/
+const tweetMostRecentWithMotivation = () => {
+  const params = {
+    q: phraseToLook,
+    result_type: 'recent',
+    lang: 'en'
+  };
+
+  T.get('search/tweets', params, (err, data) => {
+    console.log('CHECK TWEET');
+    if (err) { return console.log('CANNOT RETWEET'); }
+    const obj = {
+      id: data.statuses[0].id,
+      name: data.statuses[0].user.screen_name
+    };
+
+    const tweet = {
+      status: `@${obj.name} is one of the #supercoder of the day. Good work. #100DaysOfCode.`,
+      in_reply_to_status_id: obj.id,
+    };
+
+    console.log('RETWEET');
+    console.log({ tweet });
+
+    T.post('statuses/update', tweet, err => {
+      console.log({ err });
+    });
+  });
+};
+
+setInterval(tweetMostRecentWithMotivation, 60000 * 10);

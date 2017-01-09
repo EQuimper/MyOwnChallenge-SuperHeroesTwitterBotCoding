@@ -54,5 +54,13 @@ export const quotes = [
   {
     text: 'If you become more than a man, devote yourself to an ideal, then you become something else entirely.',
     author: 'Ra\'s Al Ghul'
+  },
+  {
+    text: 'The future is worth it. All the pain. All the tears. The future is worth the fight.',
+    author: 'Martian Manhunter'
+  },
+  {
+    text: 'The greatest power on Earth is the magnificent power we all of us possess... the power of the human brain!',
+    author: 'Professor X'
   }
 ];
