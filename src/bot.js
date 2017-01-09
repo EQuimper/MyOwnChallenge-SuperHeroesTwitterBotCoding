@@ -35,7 +35,15 @@ const tweetIt = txt => {
     } else {
       console.log('Message Sent!');
     }
-  });
+  })
+    .then(() => {
+      console.log('STOP FOR 2 MINUTES');
+      streamFilter.stop();
+      setInterval(() => {
+        console.log('RESTART');
+        streamFilter.start();
+      });
+    });
 };
 
 /*
