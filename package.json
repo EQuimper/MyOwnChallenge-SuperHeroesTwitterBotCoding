@@ -10,7 +10,12 @@
     "motivation"
   ],
   "scripts": {
+    "heroku-prebuild": "echo Start build -----------",
+    "heroku-postbuild": "echo Build done -----",
     "start": "nodemon index.js"
+  },
+  "engines": {
+    "node": "7.x"
   },
   "description": "Twitter bot for motivated and inspire people coding in the #100DaysOfCode",
   "main": "index.js",
