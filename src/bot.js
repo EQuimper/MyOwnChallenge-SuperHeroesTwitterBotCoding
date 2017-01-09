@@ -3,12 +3,11 @@ import config from './config';
 import {
   getFollowedMessage,
   getMotivationMessage,
-  blackListUsers
+  blackListUsers,
+  hashtagsToReply,
+  phraseToLook
 } from './helpers';
-import { hashtagsToReply } from './hashtagsToReply';
-import { hashtagsToTweets } from './hashtagsToTweets';
 
-const phraseToLook = ['#100DaysOfCode'];
 const { consumer_key, consumer_secret, access_token, access_token_secret } = config;
 
 /*
@@ -40,11 +39,7 @@ const tweetIt = txt => {
     } else {
       console.log('Message Sent!');
     }
-  })
-    .then(() => {
-      streamFilter.stop();
-      setTimeout(() => streamFilter.start(), 60000);
-    });
+  });
 };
 
 /*
@@ -62,6 +57,9 @@ streamFilter.on('tweet', t => {
   tweetIt(getMotivationMessage(t.user.screen_name));
 });
 
+/*
+* WHEN GET A FOLLOWER
+*/
 const botStream = T.stream('user');
 
 const getFollowed = e => {
@@ -70,3 +68,15 @@ const getFollowed = e => {
 };
 
 botStream.on('follow', getFollowed);
+
+/*
+* WHEN GET A QUOTED ON A TWEET
+*/
+const quotedStream = T.stream('user');
+
+const getQuoted = e => {
+  console.log('GET A QUOTED');
+  console.log({ e });
+};
+
+quotedStream.on('quoted_tweet', getQuoted);
