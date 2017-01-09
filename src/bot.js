@@ -34,6 +34,8 @@ console.log('Bot is running...');
 
 /*
 * TWEET function
+* take a txt and tweet it
+* stop after for 4 minutes cause of spam
 */
 const tweetIt = txt => {
   const tweet = {
@@ -78,6 +80,9 @@ streamFilter.on('limit', limitMessage => {
   const int = setInterval(() => callRestart(int), 60000 * 4);
 });
 
+/*
+* STREAM EACH TWEET WITH THE HASHTAG SEARCH
+*/
 streamFilter.on('tweet', t => {
   console.log({ t });
   console.log('NEW TWEET');
@@ -86,6 +91,7 @@ streamFilter.on('tweet', t => {
     console.log('USER BLOCK', t.user.screen_name);
     return;
   }
+  // Tweet the user with a motivation message
   tweetIt(getMotivationMessage(t.user.screen_name));
 });
 
@@ -96,6 +102,7 @@ const botStream = T.stream('user');
 
 const getFollowed = e => {
   console.log('GET A FOLLOWER');
+  // tweet user with the message on follow
   tweetIt(getFollowedMessage(e.source.screen_name));
 };
 
@@ -132,7 +139,7 @@ const tweetMostRecentWithMotivation = () => {
       name: data.statuses[num].user.screen_name
     };
 
-    if (blackListUsers.includes(obj.name)) {
+    if (blackListUsers.includes(obj.name) || new RegExp('bot', 'ig').test(obj.name)) {
       num++;
       obj = {
         id: data.statuses[num].id,
