@@ -3,7 +3,8 @@ import {
   getFollowedMessage,
   getMotivationMessage,
   blackListUsers,
-  phraseToLook
+  phraseToLook,
+  getRandom
 } from './helpers';
 
 /*
@@ -32,6 +33,39 @@ if (process.env.NODE_ENV === 'production') {
 
 console.log('Bot is running...');
 
+
+setInterval(() => {
+  console.log('WE RUN');
+  const params = {
+    q: phraseToLook,
+    result_type: 'recent',
+    lang: 'en'
+  };
+
+  T.get('search/tweets', params, (err, data) => {
+    if (err) { return console.log('CANNOT RETWEET'); }
+    // let num = 0;
+    let getR = getRandom(data.statuses);
+
+    let obj = {
+      id: getR.id,
+      name: getR.user.screen_name
+    };
+
+    if (blackListUsers.includes(obj.name) || new RegExp('bot', 'ig').test(obj.name)) {
+      getR = getRandom(data.statuses);
+      obj = {
+        id: getR.id,
+        name: getR.user.screen_name
+      };
+    }
+    return obj;
+  })
+    .then(obj => tweetIt(getMotivationMessage(obj.name)));
+}, 60000 * 5);
+
+
+
 /*
 * TWEET function
 * take a txt and tweet it
@@ -50,51 +84,46 @@ const tweetIt = txt => {
     } else {
       console.log('Message Sent!');
     }
-  })
-    .then(() => {
-      console.log('STOP FOR 5 MINUTES');
-      streamFilter.stop();
-      const int = setInterval(() => callRestart(int), 60000 * 5);
-    });
+  });
 };
 
 // Restart the stream and clear the interval
-const callRestart = interval => {
-  streamFilter.start();
-  console.info('STREAM RESTART');
-  clearInterval(interval);
-  console.info('Interval clear');
-};
+// const callRestart = interval => {
+//   streamFilter.start();
+//   console.info('STREAM RESTART');
+//   clearInterval(interval);
+//   console.info('Interval clear');
+// };
 
 /*
 * GET LIVE UPDATE WITH THE HASHTAG WE SEARCH
 */
-const streamFilter = T.stream('statuses/filter', { track: phraseToLook });
+// const streamFilter = T.stream('statuses/filter', { track: phraseToLook });
 
 /*
 * CHECK LIMIT MESSAGE
 */
-streamFilter.on('limit', limitMessage => {
-  console.log('LIMIT', limitMessage);
-  streamFilter.stop();
-  const int = setInterval(() => callRestart(int), 60000 * 5);
-});
+// streamFilter.on('limit', limitMessage => {
+//   console.log('LIMIT', limitMessage);
+//   streamFilter.stop();
+//   const int = setInterval(() => callRestart(int), 60000 * 7);
+// });
 
 /*
 * STREAM EACH TWEET WITH THE HASHTAG SEARCH
 */
-streamFilter.on('tweet', t => {
-  console.log({ t });
-  console.log('NEW TWEET');
-  // Be sure we don't retweet a bot
-  const name = t.user.screen_name;
-  if (blackListUsers.includes(name) || new RegExp('bot', 'ig').test(name)) {
-    console.log('USER BLOCK', name);
-    return;
-  }
-  // Tweet the user with a motivation message
-  tweetIt(getMotivationMessage(name));
-});
+// streamFilter.on('tweet', t => {
+//   console.log({ t });
+//   console.log('NEW TWEET');
+//   // Be sure we don't retweet a bot
+//   const name = t.user.screen_name;
+//   if (blackListUsers.includes(name) || new RegExp('bot', 'ig').test(name)) {
+//     console.log('USER BLOCK', name);
+//     return;
+//   }
+//   // Tweet the user with a motivation message
+//   tweetIt(getMotivationMessage(name));
+// });
 
 /*
 * WHEN GET A FOLLOWER
@@ -122,7 +151,7 @@ botStream.on('follow', getFollowed);
 // quotedStream.on('quoted_tweet', getQuoted);
 
 /*
-* RETWEET THE MOST RECENT USER EACH 10 MINUTE WITH A MOTIVATION
+* RETWEET THE MOST RECENT USER EACH 15 MINUTES WITH A MOTIVATION
 */
 const tweetMostRecentWithMotivation = () => {
   const params = {
@@ -162,4 +191,4 @@ const tweetMostRecentWithMotivation = () => {
   });
 };
 
-setInterval(tweetMostRecentWithMotivation, 60000 * 10);
+setInterval(tweetMostRecentWithMotivation, 60000 * 15);
