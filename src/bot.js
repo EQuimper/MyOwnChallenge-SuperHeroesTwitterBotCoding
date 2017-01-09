@@ -52,9 +52,9 @@ const tweetIt = txt => {
     }
   })
     .then(() => {
-      console.log('STOP FOR 4 MINUTES');
+      console.log('STOP FOR 5 MINUTES');
       streamFilter.stop();
-      const int = setInterval(() => callRestart(int), 60000 * 4);
+      const int = setInterval(() => callRestart(int), 60000 * 5);
     });
 };
 
@@ -77,7 +77,7 @@ const streamFilter = T.stream('statuses/filter', { track: phraseToLook });
 streamFilter.on('limit', limitMessage => {
   console.log('LIMIT', limitMessage);
   streamFilter.stop();
-  const int = setInterval(() => callRestart(int), 60000 * 4);
+  const int = setInterval(() => callRestart(int), 60000 * 5);
 });
 
 /*
