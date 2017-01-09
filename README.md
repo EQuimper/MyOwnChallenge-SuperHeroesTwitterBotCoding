@@ -5,7 +5,7 @@
 - [x] TweetMotivation Message
 - [x] TweetThankYou Message on follow
 - [ ] TweetOnReply
-- [ ] Retweet a user and told him his a superhero
+- [x] Retweet a user and told him his a superhero
 
 Twitter profile: https://twitter.com/heroes_bot
 

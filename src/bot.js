@@ -47,6 +47,7 @@ const tweetIt = txt => {
 const streamFilter = T.stream('statuses/filter', { track: phraseToLook });
 
 streamFilter.on('tweet', t => {
+  console.log({ t });
   console.log('NEW TWEET');
   // Be sure we don't retweet a bot
   if (blackListUsers.includes(t.user.screen_name)) {
@@ -69,16 +70,16 @@ const getFollowed = e => {
 botStream.on('follow', getFollowed);
 
 /*
-* WHEN GET A QUOTED ON A TWEET
-*/
-const quotedStream = T.stream('user');
+// * WHEN GET A QUOTED ON A TWEET
+// */
+// const quotedStream = T.stream('user');
 
-const getQuoted = e => {
-  console.log('GET A QUOTED');
-  console.log({ e });
-};
+// const getQuoted = e => {
+//   console.log('GET A QUOTED');
+//   console.log({ e });
+// };
 
-quotedStream.on('quoted_tweet', getQuoted);
+// quotedStream.on('quoted_tweet', getQuoted);
 
 /*
 * RETWEET THE MOST RECENT USER EACH 10 MINUTE WITH A MOTIVATION
@@ -93,10 +94,19 @@ const tweetMostRecentWithMotivation = () => {
   T.get('search/tweets', params, (err, data) => {
     console.log('CHECK TWEET');
     if (err) { return console.log('CANNOT RETWEET'); }
-    const obj = {
-      id: data.statuses[0].id,
-      name: data.statuses[0].user.screen_name
+    let num = 0;
+    let obj = {
+      id: data.statuses[num].id,
+      name: data.statuses[num].user.screen_name
     };
+
+    if (blackListUsers.includes(obj.name)) {
+      num++;
+      obj = {
+        id: data.statuses[num].id,
+        name: data.statuses[num].user.screen_name
+      };
+    }
 
     const tweet = {
       status: `@${obj.name} is one of the #supercoder of the day. Good work. #100DaysOfCode.`,
