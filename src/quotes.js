@@ -1,19 +1,11 @@
-const quotes = [
+export const quotes = [
   {
     text: 'You\'re much stronger than you think you are. Trust me.',
     author: 'Superman'
   },
   {
-    text: 'The strength of this country isn\'t in buildings of brick and steel. It\'s in the hearts of those who have sworn to fight for it\'s freedom...',
-    author: 'Captain America'
-  },
-  {
     text: 'When you decide not to be afraid, you can find friends in super unexpected places.',
     author: 'Ms. Marvel'
-  },
-  {
-    text: 'You\'re going to make a difference. A lot of times it won\'t be huge, it won\'t be visible even. But it will matter just the same.',
-    author: 'Commissioner James Gordon'
   },
   {
     text: 'You only have your thoughts and dreams ahead of you. You are someone. You mean something.',
@@ -29,10 +21,6 @@ const quotes = [
   },
   {
     text: 'It’s not who I am underneath, but what I do that defines me.',
-    author: 'Batman'
-  },
-  {
-    text: 'Sometimes the truth isn\'t good enough. Sometimes people deserve more. Sometimes people deserve to have their faith rewarded.',
     author: 'Batman'
   },
   {
