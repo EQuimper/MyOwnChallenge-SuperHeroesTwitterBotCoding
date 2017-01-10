@@ -16,8 +16,7 @@ if (process.env.NODE_ENV === 'production') {
     consumer_key: process.env.consumer_key,
     consumer_secret: process.env.consumer_secret,
     access_token: process.env.access_token,
-    access_token_secret: process.env.access_token_secret,
-    timeout_ms: 60 * 1000
+    access_token_secret: process.env.access_token_secret
   });
 } else {
   require('dotenv').config();
@@ -27,7 +26,6 @@ if (process.env.NODE_ENV === 'production') {
     consumer_secret: process.env.consumer_secret,
     access_token: process.env.access_token,
     access_token_secret: process.env.access_token_secret,
-    timeout_ms: 60 * 1000
   });
 }
 
@@ -45,13 +43,14 @@ const sendTweet = () => {
   T.get('search/tweets', params, (err, data) => {
     if (err) { return console.log('CANNOT RETWEET'); }
     // let num = 0;
+    // Get a random tweet
     let getR = getRandom(data.statuses);
 
     let obj = {
       id: getR.id,
       name: getR.user.screen_name
     };
-
+    // Check if this is a other bot
     if (blackListUsers.includes(obj.name) || new RegExp('bot', 'ig').test(obj.name)) {
       getR = getRandom(data.statuses);
       obj = {
@@ -63,11 +62,10 @@ const sendTweet = () => {
   });
 };
 
+// Send tweet immediately when app start
 sendTweet();
-
-setInterval(sendTweet, 60000 * 5);
-
-
+// Send tweet each 6 minutes
+setInterval(sendTweet, 60000 * 6);
 
 /*
 * TWEET function
@@ -80,6 +78,7 @@ const tweetIt = txt => {
   };
 
   console.log({ tweet });
+  console.log('TWEET ON THE WAY');
 
   T.post('statuses/update', tweet, err => {
     if (err) {
