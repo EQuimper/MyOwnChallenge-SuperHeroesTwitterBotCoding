@@ -44,21 +44,17 @@ const sendTweet = () => {
     if (err) { return console.log('CANNOT RETWEET'); }
     // let num = 0;
     // Get a random tweet
-    let getR = getRandom(data.statuses);
+    let randomName;
 
-    let obj = {
-      id: getR.id,
-      name: getR.user.screen_name
-    };
+    randomName = getRandom(data.statuses).user.screen_name;
     // Check if this is a other bot
-    if (blackListUsers.includes(obj.name) || new RegExp('bot', 'ig').test(obj.name)) {
-      getR = getRandom(data.statuses);
-      obj = {
-        id: getR.id,
-        name: getR.user.screen_name
-      };
+    console.log('OLDName', randomName);
+    if (blackListUsers.includes(randomName) || new RegExp('bot', 'ig').test(randomName)) {
+      console.log('THIS IS A BOT');
+      randomName = getRandom(data.statuses).user.screen_name;
+      console.log('NEWNAME', randomName);
     }
-    return tweetIt(getMotivationMessage(obj.name));
+    return tweetIt(getMotivationMessage(randomName));
   });
 };
 
