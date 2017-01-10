@@ -31,7 +31,7 @@ if (process.env.NODE_ENV === 'production') {
 
 console.log('Bot is running...');
 
-const sendTweet = () => {
+const sendTweet = async () => {
   console.log('WE RUN');
   const params = {
     q: phraseToLook,
@@ -39,22 +39,28 @@ const sendTweet = () => {
     lang: 'en'
   };
 
-  T.get('search/tweets', params, (err, data) => {
-    if (err) { return console.log('CANNOT RETWEET'); }
-    // let num = 0;
-    // Get a random tweet
-    let randomName;
+  let api;
 
-    randomName = getRandom(data.statuses).user.screen_name;
-    // Check if this is a other bot
-    console.log('OLDName', randomName);
-    if (blackListUsers.includes(randomName) || new RegExp('bot', 'ig').test(randomName)) {
-      console.log('THIS IS A BOT');
-      randomName = getRandom(data.statuses).user.screen_name;
-      console.log('NEWNAME', randomName);
-    }
-    return tweetIt(getMotivationMessage(randomName));
-  });
+  try {
+    api = await T.get('search/tweets', params);
+  } catch (err) {
+    console.log(err);
+  }
+
+  // console.log({ data });
+
+  let randomName;
+
+  randomName = getRandom(api.data.statuses).user.screen_name;
+
+  console.log('OLDName', randomName);
+  if (blackListUsers.includes(randomName) || new RegExp('bot', 'ig').test(randomName)) {
+    console.log('THIS IS A BOT');
+    randomName = getRandom(api.data.statuses).user.screen_name;
+    console.log('NEWNAME', randomName);
+  }
+
+  return tweetIt(getMotivationMessage(randomName));
 };
 
 // Send tweet immediately when app start
@@ -65,7 +71,7 @@ setInterval(sendTweet, 60000 * 15);
 // ===============================
 //          TWEET FUNCTION ~ Take txt
 // ===============================
-const tweetIt = txt => {
+const tweetIt = async txt => {
   const tweet = {
     status: txt
   };
@@ -73,20 +79,16 @@ const tweetIt = txt => {
   console.log({ tweet });
   console.log('TWEET ON THE WAY');
 
-  T.post('statuses/update', tweet, err => {
-    if (err) {
-      console.log('SOMETHING WRONG HAPPEN');
-      console.log('ERROR', err);
-      // if status is over 140 characters
-      if (err.code === 186) {
-        console.log('ERROR TWEET TOO LONG');
-        sendTweet();
-      }
-    } else {
-      console.log('Message Sent!');
-      console.log('WAIT 15 MINUTES');
+  try {
+    await T.post('statuses/update', tweet);
+  } catch (err) {
+    if (err.code === 186) {
+      console.log('ERROR TWEET TOO LONG');
+      sendTweet();
     }
-  });
+    console.log('SOMETHING WRONG HAPPEN');
+    console.log('ERROR', err);
+  }
 };
 // ============================================================
 
@@ -108,42 +110,43 @@ botStream.on('follow', getFollowed);
 //  RETWEET THE MOST RECENT user
 //  EACH 15 MINUTES WITH A MOTIVATION
 // ===============================
-const tweetMostRecentWithMotivation = () => {
+const tweetMostRecentWithMotivation = async () => {
   const params = {
     q: phraseToLook,
     result_type: 'recent',
     lang: 'en'
   };
 
-  T.get('search/tweets', params, (err, data) => {
-    console.log('CHECK TWEET');
-    if (err) { return console.log('CANNOT RETWEET'); }
-    let num = 0;
-    let obj = {
-      id: data.statuses[num].id,
-      name: data.statuses[num].user.screen_name
-    };
+  // Get most recent tweet
+  let api;
 
-    if (blackListUsers.includes(obj.name) || new RegExp('bot', 'ig').test(obj.name)) {
-      num++;
-      obj = {
-        id: data.statuses[num].id,
-        name: data.statuses[num].user.screen_name
-      };
-    }
+  try {
+    api = await T.get('search/tweets', params);
+  } catch (err) {
+    console.log({ err });
+  }
 
-    const tweet = {
-      status: `@${obj.name} is one of the #supercoder of the day. Good work. #100DaysOfCode.`,
-      in_reply_to_status_id: obj.id,
-    };
+  // Get a random user name
+  let randomName = getRandom(api.data.statuses).user.screen_name;
 
-    console.log('RETWEET');
-    console.log({ tweet });
+  // Search if bot
+  if (blackListUsers.includes(randomName) || new RegExp('bot', 'ig').test(randomName)) {
+    randomName = getRandom(api.data.statuses).user.screen_name;
+  }
 
-    T.post('statuses/update', tweet, err => {
-      console.log({ err });
-    });
-  });
+  const tweet = {
+    status: `@${randomName} is one of the #supercoder of the day. Good work. #100DaysOfCode.`
+  };
+
+  console.log('TWEET');
+  console.log({ tweet });
+
+  try {
+    await T.post('statuses/update', tweet);
+    console.log('MESSAGE SEND');
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 // Tweet about supercoder every 30 minutes
