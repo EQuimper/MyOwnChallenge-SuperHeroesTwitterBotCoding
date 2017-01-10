@@ -5,7 +5,7 @@ import { hashtagsToTweets } from './hashtagsToTweets';
 export const getMotivationMessage = name => {
   let mess;
   const qt = getRandom(quotes);
-  const ht = getRandom(hashtagsToTweets);
+  const ht = hashtagsToTweets[qt.hashtag];
   mess = `@${name} • “${qt.text}” -${qt.author} ${ht} #coderBot`;
 
   if (mess.length > 144) {

@@ -77,6 +77,10 @@ const tweetIt = txt => {
     if (err) {
       console.log('SOMETHING WRONG HAPPEN');
       console.log('ERROR', err);
+      // if status is over 140 characters
+      if (err.code === 186) {
+        sendTweet();
+      }
     } else {
       console.log('Message Sent!');
     }
