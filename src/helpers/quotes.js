@@ -20,11 +20,6 @@ export const quotes = [
     hashtag: 1
   },
   {
-    text: 'I WEAR A MASK, AND THAT MASK IS NOT TO HIDE WHO I AM, BUT TO CREATE WHO I AM.',
-    author: 'Batman',
-    hashtag: 0
-  },
-  {
     text: 'It’s not who I am underneath, but what I do that defines me.',
     author: 'Batman',
     hashtag: 1
