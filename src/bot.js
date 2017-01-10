@@ -1,14 +1,11 @@
 import Twit from 'twit';
 import {
   getFollowedMessage,
-  // getMotivationMessage,
+  getMotivationMessage,
   blackListUsers,
   phraseToLook,
-  // getRandom
+  getRandom
 } from './helpers';
-import {
-  sendTweet
-} from './functions';
 
 /*
 * INIT THE BOT
@@ -34,16 +31,40 @@ if (process.env.NODE_ENV === 'production') {
 
 console.log('Bot is running...');
 
-// Send tweet immediately when app start
-sendTweet(T);
-// Send tweet each 6 minutes
-setInterval(sendTweet(T), 60000 * 6);
+const sendTweet = () => {
+  console.log('WE RUN');
+  const params = {
+    q: phraseToLook,
+    result_type: 'recent',
+    lang: 'en'
+  };
 
-/*
-* TWEET function
-* take a txt and tweet it
-* stop after for 4 minutes cause of spam
-*/
+  T.get('search/tweets', params, (err, data) => {
+    if (err) { return console.log('CANNOT RETWEET'); }
+    // let num = 0;
+    // Get a random tweet
+    let randomName;
+
+    randomName = getRandom(data.statuses).user.screen_name;
+    // Check if this is a other bot
+    console.log('OLDName', randomName);
+    if (blackListUsers.includes(randomName) || new RegExp('bot', 'ig').test(randomName)) {
+      console.log('THIS IS A BOT');
+      randomName = getRandom(data.statuses).user.screen_name;
+      console.log('NEWNAME', randomName);
+    }
+    return tweetIt(getMotivationMessage(randomName));
+  });
+};
+
+// Send tweet immediately when app start
+sendTweet();
+// Send tweet each 6 minutes
+setInterval(sendTweet, 60000 * 6);
+
+// ===============================
+//          TWEET FUNCTION ~ Take txt
+// ===============================
 const tweetIt = txt => {
   const tweet = {
     status: txt
@@ -55,53 +76,17 @@ const tweetIt = txt => {
   T.post('statuses/update', tweet, err => {
     if (err) {
       console.log('SOMETHING WRONG HAPPEN');
+      console.log('ERROR', err);
     } else {
       console.log('Message Sent!');
     }
   });
 };
+// ============================================================
 
-// Restart the stream and clear the interval
-// const callRestart = interval => {
-//   streamFilter.start();
-//   console.info('STREAM RESTART');
-//   clearInterval(interval);
-//   console.info('Interval clear');
-// };
-
-/*
-* GET LIVE UPDATE WITH THE HASHTAG WE SEARCH
-*/
-// const streamFilter = T.stream('statuses/filter', { track: phraseToLook });
-
-/*
-* CHECK LIMIT MESSAGE
-*/
-// streamFilter.on('limit', limitMessage => {
-//   console.log('LIMIT', limitMessage);
-//   streamFilter.stop();
-//   const int = setInterval(() => callRestart(int), 60000 * 7);
-// });
-
-/*
-* STREAM EACH TWEET WITH THE HASHTAG SEARCH
-*/
-// streamFilter.on('tweet', t => {
-//   console.log({ t });
-//   console.log('NEW TWEET');
-//   // Be sure we don't retweet a bot
-//   const name = t.user.screen_name;
-//   if (blackListUsers.includes(name) || new RegExp('bot', 'ig').test(name)) {
-//     console.log('USER BLOCK', name);
-//     return;
-//   }
-//   // Tweet the user with a motivation message
-//   tweetIt(getMotivationMessage(name));
-// });
-
-/*
-* WHEN GET A FOLLOWER
-*/
+// ===============================
+//          GET A FOLLOWER
+// ===============================
 const botStream = T.stream('user');
 
 const getFollowed = e => {
@@ -111,22 +96,12 @@ const getFollowed = e => {
 };
 
 botStream.on('follow', getFollowed);
+// ============================================================
 
-/*
-// * WHEN GET A QUOTED ON A TWEET
-// */
-// const quotedStream = T.stream('user');
-
-// const getQuoted = e => {
-//   console.log('GET A QUOTED');
-//   console.log({ e });
-// };
-
-// quotedStream.on('quoted_tweet', getQuoted);
-
-/*
-* RETWEET THE MOST RECENT USER EACH 15 MINUTES WITH A MOTIVATION
-*/
+// ===============================
+//  RETWEET THE MOST RECENT user
+//  EACH 15 MINUTES WITH A MOTIVATION
+// ===============================
 const tweetMostRecentWithMotivation = () => {
   const params = {
     q: phraseToLook,
@@ -166,3 +141,5 @@ const tweetMostRecentWithMotivation = () => {
 };
 
 setInterval(tweetMostRecentWithMotivation, 60000 * 15);
+
+// ============================================================
