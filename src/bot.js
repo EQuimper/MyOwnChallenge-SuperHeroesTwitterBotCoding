@@ -59,8 +59,8 @@ const sendTweet = () => {
 
 // Send tweet immediately when app start
 sendTweet();
-// Send tweet each 6 minutes
-setInterval(sendTweet, 60000 * 6);
+// Send tweet each 8 minutes
+setInterval(sendTweet, 60000 * 8);
 
 // ===============================
 //          TWEET FUNCTION ~ Take txt
@@ -79,6 +79,7 @@ const tweetIt = txt => {
       console.log('ERROR', err);
       // if status is over 140 characters
       if (err.code === 186) {
+        console.log('ERROR TWEET TOO LONG');
         sendTweet();
       }
     } else {
@@ -144,6 +145,6 @@ const tweetMostRecentWithMotivation = () => {
   });
 };
 
-setInterval(tweetMostRecentWithMotivation, 60000 * 15);
+setInterval(tweetMostRecentWithMotivation, 60000 * 20);
 
 // ============================================================
