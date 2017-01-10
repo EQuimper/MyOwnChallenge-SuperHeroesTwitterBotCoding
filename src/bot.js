@@ -31,7 +31,7 @@ if (process.env.NODE_ENV === 'production') {
 
 console.log('Bot is running...');
 
-const sendTweet = async () => {
+const sendTweet = async motivation => {
   console.log('WE RUN');
   const params = {
     q: phraseToLook,
@@ -47,8 +47,6 @@ const sendTweet = async () => {
     console.log(err);
   }
 
-  // console.log({ data });
-
   let randomName;
 
   randomName = getRandom(api.data.statuses).user.screen_name;
@@ -60,13 +58,28 @@ const sendTweet = async () => {
     console.log('NEWNAME', randomName);
   }
 
-  return tweetIt(getMotivationMessage(randomName));
+  if (motivation) {
+    console.log('MOTIVATION');
+    return tweetIt(getMotivationMessage(randomName));
+  }
+
+  console.log('SUPERCODER');
+  const tweet = {
+    status: `@${randomName} is one of the #supercoder of the day. Good work. #100DaysOfCode.`
+  };
+
+  return tweetIt(tweet);
 };
 
 // Send tweet immediately when app start
 sendTweet();
 // Send tweet each 15 minutes
 setInterval(sendTweet, 60000 * 15);
+
+// Tweet about supercoder every 30 minutes
+setInterval(() => {
+  sendTweet(true);
+}, 60000 * 30);
 
 // ===============================
 //          TWEET FUNCTION ~ Take txt
@@ -104,52 +117,4 @@ const getFollowed = e => {
 };
 
 botStream.on('follow', getFollowed);
-// ============================================================
-
-// ===============================
-//  RETWEET THE MOST RECENT user
-//  EACH 15 MINUTES WITH A MOTIVATION
-// ===============================
-const tweetMostRecentWithMotivation = async () => {
-  const params = {
-    q: phraseToLook,
-    result_type: 'recent',
-    lang: 'en'
-  };
-
-  // Get most recent tweet
-  let api;
-
-  try {
-    api = await T.get('search/tweets', params);
-  } catch (err) {
-    console.log({ err });
-  }
-
-  // Get a random user name
-  let randomName = getRandom(api.data.statuses).user.screen_name;
-
-  // Search if bot
-  if (blackListUsers.includes(randomName) || new RegExp('bot', 'ig').test(randomName)) {
-    randomName = getRandom(api.data.statuses).user.screen_name;
-  }
-
-  const tweet = {
-    status: `@${randomName} is one of the #supercoder of the day. Good work. #100DaysOfCode.`
-  };
-
-  console.log('TWEET');
-  console.log({ tweet });
-
-  try {
-    await T.post('statuses/update', tweet);
-    console.log('MESSAGE SEND');
-  } catch (err) {
-    console.log(err);
-  }
-};
-
-// Tweet about supercoder every 30 minutes
-setInterval(tweetMostRecentWithMotivation, 60000 * 30);
-
 // ============================================================
