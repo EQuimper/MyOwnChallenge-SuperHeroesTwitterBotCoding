@@ -59,8 +59,8 @@ const sendTweet = () => {
 
 // Send tweet immediately when app start
 sendTweet();
-// Send tweet each 10 minutes
-setInterval(sendTweet, 60000 * 10);
+// Send tweet each 15 minutes
+setInterval(sendTweet, 60000 * 15);
 
 // ===============================
 //          TWEET FUNCTION ~ Take txt
@@ -84,7 +84,7 @@ const tweetIt = txt => {
       }
     } else {
       console.log('Message Sent!');
-      console.log('WAIT 10 MINUTES');
+      console.log('WAIT 15 MINUTES');
     }
   });
 };
