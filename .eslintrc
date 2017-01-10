@@ -11,5 +11,9 @@
     "import/no-extraneous-dependencies": 0,
     "no-return-assign": 0,
     "generator-star-spacing": 0
+  },
+  "globals": {
+    "describe": false,
+    "it": false
   }
 }

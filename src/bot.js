@@ -1,11 +1,14 @@
 import Twit from 'twit';
 import {
   getFollowedMessage,
-  getMotivationMessage,
+  // getMotivationMessage,
   blackListUsers,
   phraseToLook,
-  getRandom
+  // getRandom
 } from './helpers';
+import {
+  sendTweet
+} from './functions';
 
 /*
 * INIT THE BOT
@@ -31,37 +34,10 @@ if (process.env.NODE_ENV === 'production') {
 
 console.log('Bot is running...');
 
-
-const sendTweet = () => {
-  console.log('WE RUN');
-  const params = {
-    q: phraseToLook,
-    result_type: 'recent',
-    lang: 'en'
-  };
-
-  T.get('search/tweets', params, (err, data) => {
-    if (err) { return console.log('CANNOT RETWEET'); }
-    // let num = 0;
-    // Get a random tweet
-    let randomName;
-
-    randomName = getRandom(data.statuses).user.screen_name;
-    // Check if this is a other bot
-    console.log('OLDName', randomName);
-    if (blackListUsers.includes(randomName) || new RegExp('bot', 'ig').test(randomName)) {
-      console.log('THIS IS A BOT');
-      randomName = getRandom(data.statuses).user.screen_name;
-      console.log('NEWNAME', randomName);
-    }
-    return tweetIt(getMotivationMessage(randomName));
-  });
-};
-
 // Send tweet immediately when app start
-sendTweet();
+sendTweet(T);
 // Send tweet each 6 minutes
-setInterval(sendTweet, 60000 * 6);
+setInterval(sendTweet(T), 60000 * 6);
 
 /*
 * TWEET function
