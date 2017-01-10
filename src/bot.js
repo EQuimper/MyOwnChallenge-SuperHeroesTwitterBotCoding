@@ -59,8 +59,8 @@ const sendTweet = () => {
 
 // Send tweet immediately when app start
 sendTweet();
-// Send tweet each 8 minutes
-setInterval(sendTweet, 60000 * 8);
+// Send tweet each 10 minutes
+setInterval(sendTweet, 60000 * 10);
 
 // ===============================
 //          TWEET FUNCTION ~ Take txt
@@ -84,6 +84,7 @@ const tweetIt = txt => {
       }
     } else {
       console.log('Message Sent!');
+      console.log('WAIT 10 MINUTES');
     }
   });
 };
@@ -145,6 +146,7 @@ const tweetMostRecentWithMotivation = () => {
   });
 };
 
-setInterval(tweetMostRecentWithMotivation, 60000 * 20);
+// Tweet about supercoder every 30 minutes
+setInterval(tweetMostRecentWithMotivation, 60000 * 30);
 
 // ============================================================
