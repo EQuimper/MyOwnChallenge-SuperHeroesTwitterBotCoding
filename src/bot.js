@@ -4,7 +4,8 @@ import {
   getMotivationMessage,
   blackListUsers,
   phraseToLook,
-  getRandom
+  getRandom,
+  handleError
 } from './helpers';
 
 /*
@@ -44,7 +45,7 @@ const sendTweet = async motivation => {
   try {
     api = await T.get('search/tweets', params);
   } catch (err) {
-    console.log(err);
+    handleError(err);
   }
 
   let randomName;
@@ -95,12 +96,7 @@ const tweetIt = async txt => {
   try {
     await T.post('statuses/update', tweet);
   } catch (err) {
-    if (err.code === 186) {
-      console.log('ERROR TWEET TOO LONG');
-      sendTweet();
-    }
-    console.log('SOMETHING WRONG HAPPEN');
-    console.log('ERROR', err);
+    handleError(err);
   }
 };
 
@@ -116,3 +112,20 @@ const getFollowed = e => {
 };
 
 botStream.on('follow', getFollowed);
+
+// Connect
+T.stream.on('connect', () => {
+  console.log('CONNECTED');
+});
+
+// Reconnect
+T.stream.on('reconnect', (req, res, connectInterval) => {
+  console.log('Reconnect');
+  console.log(req);
+  console.log(res);
+  console.log(connectInterval);
+});
+
+T.stream.on('limit', mess => {
+  console.log('Limit', mess);
+});
