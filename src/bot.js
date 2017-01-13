@@ -33,22 +33,19 @@ if (process.env.NODE_ENV === 'production') {
 console.log('Bot is running...');
 
 const sendTweet = async motivation => {
-  console.log('WE RUN');
   const params = {
     q: phraseToLook,
     result_type: 'recent',
     lang: 'en'
   };
-
   let api;
+  let randomName;
 
   try {
     api = await T.get('search/tweets', params);
   } catch (err) {
     handleError(err);
   }
-
-  let randomName;
 
   randomName = getRandom(api.data.statuses).user.screen_name;
 
@@ -86,15 +83,11 @@ setInterval(sendTweet, 60000 * 30);
 //          TWEET FUNCTION ~ Take txt
 // ===============================
 const tweetIt = async txt => {
-  const tweet = {
-    status: txt
-  };
-
-  console.log({ tweet });
+  console.log({ txt });
   console.log('TWEET ON THE WAY');
 
   try {
-    await T.post('statuses/update', tweet);
+    await T.post('statuses/update', { status: txt });
     console.log('TWEET SENT');
   } catch (err) {
     handleError(err);
@@ -115,9 +108,7 @@ const getFollowed = e => {
 botStream.on('follow', getFollowed);
 
 // Connect
-botStream.on('connect', () => {
-  console.log('CONNECTED');
-});
+botStream.on('connect', console.log('CONNECTED'));
 
 // Reconnect
 botStream.on('reconnect', (req, res, connectInterval) => {
@@ -127,6 +118,5 @@ botStream.on('reconnect', (req, res, connectInterval) => {
   console.log(connectInterval);
 });
 
-botStream.on('limit', mess => {
-  console.log('Limit', mess);
-});
+// Limit
+botStream.on('limit', mess => console.log('Limit', mess));
