@@ -1,1 +1,1 @@
-export const phraseToLook = ['#100DaysOfCode', '#301DaysOfCode'];
+export const phraseToLook = '#100DaysOfCode OR #301DaysOfCode';

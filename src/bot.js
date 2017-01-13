@@ -38,6 +38,7 @@ const sendTweet = async motivation => {
     result_type: 'recent',
     lang: 'en'
   };
+  console.log(params);
   let api;
 
   try {
@@ -46,9 +47,8 @@ const sendTweet = async motivation => {
     handleError(err);
   }
 
-  const randomName = getRandom(api.data.statuses).user.screen_name;
 
-  console.log(randomName);
+  const randomName = getRandom(api.data.statuses).user.screen_name;
 
   if (blackListUsers.indexOf(randomName) !== -1 || new RegExp('bot', 'ig').test(randomName)) {
     console.log('THIS IS A BOT');
@@ -57,12 +57,12 @@ const sendTweet = async motivation => {
 
   if (motivation) {
     console.log('MOTIVATION');
-    tweetIt(getMotivationMessage(randomName));
-  } else {
-    console.log('SUPERCODER');
-    const mess = `@${randomName} is one of the #supercoder of the day. Good work. #100DaysOfCode #301DaysOfCode`;
-    tweetIt(mess);
+    return tweetIt(getMotivationMessage(randomName));
   }
+
+  console.log('SUPERCODER');
+  const mess = `@${randomName} is one of the #supercoder of the day. Good work. #100DaysOfCode #301DaysOfCode`;
+  return tweetIt(mess);
 };
 
 // Send tweet immediately when app start
