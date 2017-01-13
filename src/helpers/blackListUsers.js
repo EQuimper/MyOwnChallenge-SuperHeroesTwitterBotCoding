@@ -1,1 +1,7 @@
-export const blackListUsers = ['_100DaysOfCode', 'heroes_bot', 'javascriptd', 'wintershawls'];
+export const blackListUsers = [
+  '_100DaysOfCode',
+  'heroes_bot',
+  'javascriptd',
+  'wintershawls',
+  'CodeNewbies'
+];
