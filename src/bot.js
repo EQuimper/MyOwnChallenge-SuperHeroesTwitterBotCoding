@@ -48,6 +48,8 @@ const sendTweet = async motivation => {
 
   const randomName = getRandom(api.data.statuses).user.screen_name;
 
+  console.log(randomName);
+
   if (blackListUsers.indexOf(randomName) !== -1 || new RegExp('bot', 'ig').test(randomName)) {
     console.log('THIS IS A BOT');
     return;
