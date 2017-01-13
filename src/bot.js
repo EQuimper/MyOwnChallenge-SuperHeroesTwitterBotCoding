@@ -72,9 +72,7 @@ const sendTweet = async motivation => {
 // Send tweet immediately when app start
 sendTweet(true);
 // Send tweet each 20 minutes
-setInterval(() => {
-  sendTweet(true);
-}, 60000 * 20);
+setInterval(() => sendTweet(true), 60000 * 20);
 
 // Tweet about supercoder every 30 minutes
 setInterval(sendTweet, 60000 * 30);
@@ -108,7 +106,7 @@ const getFollowed = e => {
 botStream.on('follow', getFollowed);
 
 // Connect
-botStream.on('connect', console.log('CONNECTED'));
+// botStream.on('connect', console.log('CONNECTED'));
 
 // Reconnect
 botStream.on('reconnect', (req, res, connectInterval) => {
