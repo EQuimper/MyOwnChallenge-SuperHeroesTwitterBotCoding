@@ -95,6 +95,7 @@ const tweetIt = async txt => {
 
   try {
     await T.post('statuses/update', tweet);
+    console.log('TWEET SENT');
   } catch (err) {
     handleError(err);
   }
