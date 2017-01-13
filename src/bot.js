@@ -114,18 +114,18 @@ const getFollowed = e => {
 botStream.on('follow', getFollowed);
 
 // Connect
-T.stream.on('connect', () => {
+botStream.on('connect', () => {
   console.log('CONNECTED');
 });
 
 // Reconnect
-T.stream.on('reconnect', (req, res, connectInterval) => {
+botStream.on('reconnect', (req, res, connectInterval) => {
   console.log('Reconnect');
   console.log(req);
   console.log(res);
   console.log(connectInterval);
 });
 
-T.stream.on('limit', mess => {
+botStream.on('limit', mess => {
   console.log('Limit', mess);
 });
