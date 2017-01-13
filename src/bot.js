@@ -39,7 +39,6 @@ const sendTweet = async motivation => {
     lang: 'en'
   };
   let api;
-  let randomName;
 
   try {
     api = await T.get('search/tweets', params);
@@ -47,12 +46,11 @@ const sendTweet = async motivation => {
     handleError(err);
   }
 
-  randomName = getRandom(api.data.statuses).user.screen_name;
+  const randomName = getRandom(api.data.statuses).user.screen_name;
 
-  if (blackListUsers.includes(randomName) || new RegExp('bot', 'ig').test(randomName)) {
+  if (blackListUsers.indexOf(randomName) !== -1 || new RegExp('bot', 'ig').test(randomName)) {
     console.log('THIS IS A BOT');
-    randomName = getRandom(api.data.statuses).user.screen_name;
-    console.log('NEWNAME', randomName);
+    return;
   }
 
   if (motivation) {
@@ -60,11 +58,8 @@ const sendTweet = async motivation => {
     tweetIt(getMotivationMessage(randomName));
   } else {
     console.log('SUPERCODER');
-    const tweet = {
-      status: `@${randomName} is one of the #supercoder of the day. Good work. #100DaysOfCode.`
-    };
-
-    tweetIt(tweet);
+    const mess = `@${randomName} is one of the #supercoder of the day. Good work. #100DaysOfCode #301DaysOfCode`;
+    tweetIt(mess);
   }
 };
 
@@ -76,9 +71,7 @@ setInterval(() => sendTweet(true), 60000 * 20);
 // Tweet about supercoder every 30 minutes
 setInterval(sendTweet, 60000 * 30);
 
-// ===============================
-//          TWEET FUNCTION ~ Take txt
-// ===============================
+// Take txt and tweet it
 const tweetIt = async txt => {
   console.log({ txt });
   console.log('TWEET ON THE WAY');
