@@ -10,5 +10,6 @@ export const getFollowedMessage = (name, small) => {
   if (mess.length > 144) {
     getFollowedMessage(name, true);
   }
+
   return mess;
 };

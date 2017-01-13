@@ -73,14 +73,14 @@ const sendTweet = async motivation => {
 };
 
 // Send tweet immediately when app start
-sendTweet();
-// Send tweet each 15 minutes
-setInterval(sendTweet, 60000 * 20);
-
-// Tweet about supercoder every 30 minutes
+sendTweet(true);
+// Send tweet each 20 minutes
 setInterval(() => {
   sendTweet(true);
-}, 60000 * 30);
+}, 60000 * 20);
+
+// Tweet about supercoder every 30 minutes
+setInterval(sendTweet, 60000 * 30);
 
 // ===============================
 //          TWEET FUNCTION ~ Take txt
