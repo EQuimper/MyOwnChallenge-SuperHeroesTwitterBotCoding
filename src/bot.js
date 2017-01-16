@@ -68,11 +68,11 @@ const sendTweet = async motivation => {
 
 // Send tweet immediately when app start
 sendTweet(true);
-// Send tweet each 20 minutes
-setInterval(() => sendTweet(true), 60000 * 20);
+// Send tweet each 30 minutes
+setInterval(() => sendTweet(true), 60000 * 30);
 
-// Tweet about supercoder every 30 minutes
-setInterval(sendTweet, 60000 * 30);
+// Tweet about supercoder every 40 minutes
+setInterval(sendTweet, 60000 * 40);
 
 // Take txt and tweet it
 const tweetIt = async txt => {
