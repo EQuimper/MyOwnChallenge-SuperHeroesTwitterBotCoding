@@ -3,5 +3,8 @@ export const blackListUsers = [
   'heroes_bot',
   'javascriptd',
   'wintershawls',
-  'CodeNewbies'
+  'CodeNewbies',
+  'vuejstweet',
+  '100DaysBot',
+  'mernstacktweet'
 ];
