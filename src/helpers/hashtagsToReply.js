@@ -1,3 +1,4 @@
-export const hashtagsToReply = [
+/** @flow */
+export const hashtagsToReply: Array<string> = [
   '#keepupthegoodwork'
 ];

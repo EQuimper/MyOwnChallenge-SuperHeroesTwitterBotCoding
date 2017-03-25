@@ -1,3 +1,4 @@
+/** @flow */
 import Twit from 'twit';
 import {
   getFollowedMessage,
@@ -32,7 +33,7 @@ if (process.env.NODE_ENV === 'production') {
 
 console.log('Bot is running...');
 
-const sendTweet = async motivation => {
+const sendTweet = async (motivation: boolean) => {
   const params = {
     q: phraseToLook,
     result_type: 'recent',
@@ -43,11 +44,11 @@ const sendTweet = async motivation => {
 
   try {
     api = await T.get('search/tweets', params);
-  } catch (err) {
+  } catch (err: Object) {
     handleError(err);
   }
 
-  const randomName = getRandom(api.data.statuses).user.screen_name;
+  const randomName: string = getRandom(api.data.statuses).user.screen_name;
 
   console.log('THE NAME', randomName);
 
@@ -82,7 +83,7 @@ const tweetIt = async txt => {
   try {
     await T.post('statuses/update', { status: txt });
     console.log('TWEET SENT');
-  } catch (err) {
+  } catch (err: Object) {
     handleError(err);
   }
 };
@@ -92,7 +93,7 @@ const tweetIt = async txt => {
 // ===============================
 const botStream = T.stream('user');
 
-const getFollowed = e => {
+const getFollowed = (e: Object) => {
   console.log('GET A FOLLOWER');
   // tweet user with the message on follow
   tweetIt(getFollowedMessage(e.source.screen_name));
@@ -104,7 +105,7 @@ botStream.on('follow', getFollowed);
 // botStream.on('connect', console.log('CONNECTED'));
 
 // Reconnect
-botStream.on('reconnect', (req, res, connectInterval) => {
+botStream.on('reconnect', (req, res, connectInterval: number) => {
   console.log('Reconnect');
   console.log(req);
   console.log(res);
@@ -112,4 +113,4 @@ botStream.on('reconnect', (req, res, connectInterval) => {
 });
 
 // Limit
-botStream.on('limit', mess => console.log('Limit', mess));
+botStream.on('limit', (mess: string) => console.log('Limit', mess));

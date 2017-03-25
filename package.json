@@ -43,7 +43,9 @@
   },
   "devDependencies": {
     "babel-jest": "^19.0.0",
+    "babel-plugin-transform-flow-strip-types": "^6.22.0",
     "eslint-config-equimper": "^1.5.1",
+    "flow-bin": "^0.42.0",
     "jest": "^19.0.2"
   }
 }

@@ -1,4 +1,5 @@
-export const blackListUsers = [
+/** @flow */
+export const blackListUsers: Array<string> = [
   '_100DaysOfCode',
   'heroes_bot',
   'javascriptd',

@@ -1,11 +1,12 @@
+/** @flow */
 import { getRandom } from './getRandom';
 import { quotes } from './quotes';
 import { hashtagsToTweets } from './hashtagsToTweets';
 
-export const getMotivationMessage = name => {
-  let mess;
+export const getMotivationMessage = (name: string): string => {
+  let mess: string;
   const qt = getRandom(quotes);
-  const ht = hashtagsToTweets[qt.hashtag];
+  const ht: string = hashtagsToTweets[qt.hashtag];
   mess = `@${name} • “${qt.text}” -${qt.author} ${ht} #coderBot`;
 
   if (mess.length > 144) {

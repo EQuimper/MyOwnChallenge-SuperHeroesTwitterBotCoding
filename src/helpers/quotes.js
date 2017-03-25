@@ -1,4 +1,7 @@
-export const quotes = [
+/** @flow */
+import type { Quotes } from '../types/Data';
+
+export const quotes: Array<Quotes> = [
   {
     text: 'You\'re much stronger than you think you are. Trust me.',
     author: 'Superman',
