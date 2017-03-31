@@ -6,7 +6,7 @@ import {
   blackListUsers,
   phraseToLook,
   getRandom,
-  handleError
+  handleError,
 } from './helpers';
 
 /*
@@ -18,7 +18,7 @@ if (process.env.NODE_ENV === 'production') {
     consumer_key: process.env.consumer_key,
     consumer_secret: process.env.consumer_secret,
     access_token: process.env.access_token,
-    access_token_secret: process.env.access_token_secret
+    access_token_secret: process.env.access_token_secret,
   });
 } else {
   require('dotenv').config();
@@ -37,14 +37,14 @@ const sendTweet = async (motivation: boolean) => {
   const params = {
     q: phraseToLook,
     result_type: 'recent',
-    lang: 'en'
+    lang: 'en',
   };
   console.log(params);
   let api;
 
   try {
     api = await T.get('search/tweets', params);
-  } catch (err: Object) {
+  } catch (err) {
     handleError(err);
   }
 
@@ -83,7 +83,7 @@ const tweetIt = async txt => {
   try {
     await T.post('statuses/update', { status: txt });
     console.log('TWEET SENT');
-  } catch (err: Object) {
+  } catch (err) {
     handleError(err);
   }
 };

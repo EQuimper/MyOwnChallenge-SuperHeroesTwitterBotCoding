@@ -19,7 +19,8 @@
     "restart": "heroku restart -a sleepy-anchorage-85632",
     "stop": "heroku ps:scale worker=0",
     "scale": "heroku ps:scale web=0 worker=1",
-    "getenv": "heroku config:get consumer_key consumer_secret access_token access_token_secret -s  >> .env"
+    "getenv": "heroku config:get consumer_key consumer_secret access_token access_token_secret -s  >> .env",
+    "lint": "eslint src"
   },
   "engines": {
     "node": "7.x"
@@ -44,7 +45,8 @@
   "devDependencies": {
     "babel-jest": "^19.0.0",
     "babel-plugin-transform-flow-strip-types": "^6.22.0",
-    "eslint-config-equimper": "^1.5.2",
+    "eslint": "^3.18.0",
+    "eslint-config-equimper": "^1.6.1",
     "flow-bin": "^0.42.0",
     "jest": "^19.0.2"
   }

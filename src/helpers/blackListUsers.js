@@ -7,5 +7,5 @@ export const blackListUsers: Array<string> = [
   'CodeNewbies',
   'vuejstweet',
   '100DaysBot',
-  'mernstacktweet'
+  'mernstacktweet',
 ];
